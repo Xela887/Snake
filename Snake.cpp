@@ -1,10 +1,45 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <utility>
+
+
+class SnakeHead {
+public:
+    SnakeHead(int pos_x, int pos_y) {
+        snake_head_position_x = pos_x;
+        snake_head_position_y = pos_y;
+        Snake_Direction current_direction = Snake_Direction::RIGHT;
+    }
+
+    int snake_head_position_x;
+    int snake_head_position_y;
+
+    enum class Snake_Direction {
+        RIGHT,
+        LEFT,
+        UP,
+        DOWN
+    };
+};
+
+
+class SnakeBody {
+public:
+    std::vector<std::pair<int, int>> body_position_list;
+};
+
+
+class Fruit {
+public:
+    int fruit_position_x;
+    int fruit_position_y;
+};
 
 
 int main() {
-    const int FPS = 60;
+    const int FPS = 20;
 
     float window_width = 570;
     float window_height = 570;
@@ -27,10 +62,15 @@ int main() {
     {
         sf::Color(40, 40, 40),
         sf::Color::Green,
+        sf::Color(11, 97, 31),
         sf::Color::Red,
     };
 
     int field[FIELD_HEIGHT][FIELD_WIDTH] = { 0 };
+
+    SnakeHead snake_head(5, 5);
+    SnakeBody snake_body;
+    Fruit fruit;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -52,6 +92,8 @@ int main() {
                 window.draw(cell);
             }
         }
+
+        field[snake_head.snake_head_position_x][snake_head.snake_head_position_y] = 1;
 
         window.display();
     }
