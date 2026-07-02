@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <utility>
+#include <random>
 
 
 class SnakeHead {
@@ -33,8 +34,28 @@ public:
 
 class Fruit {
 public:
+    Fruit(bool fruitspawned) {
+        fruit_spawned = fruitspawned;
+        fruit_position_x = 0;
+        fruit_position_y = 0;
+    }
+
     int fruit_position_x;
     int fruit_position_y;
+    bool fruit_spawned;
+     
+    void spawn_fruit(int max_width, int max_height, int field[11][11]) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrX(0, max_width - 1);
+        std::uniform_int_distribution<> distrY(0, max_height - 1);
+
+        fruit_position_x = distrX(gen);
+        fruit_position_y = distrY(gen);
+
+        field[fruit_position_y][fruit_position_x] = 3;
+        fruit_spawned = true;
+    }
 };
 
 
@@ -70,7 +91,9 @@ int main() {
 
     SnakeHead snake_head(5, 5);
     SnakeBody snake_body;
-    Fruit fruit;
+    Fruit fruit(false);
+
+    fruit.spawn_fruit(FIELD_WIDTH, FIELD_HEIGHT, field);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -93,7 +116,7 @@ int main() {
             }
         }
 
-        field[snake_head.snake_head_position_x][snake_head.snake_head_position_y] = 1;
+        field[snake_head.snake_head_position_y][snake_head.snake_head_position_x] = 1;
 
         window.display();
     }
