@@ -8,21 +8,22 @@
 
 class SnakeHead {
 public:
-    SnakeHead(int pos_x, int pos_y) {
-        snake_head_position_x = pos_x;
-        snake_head_position_y = pos_y;
-        Snake_Direction current_direction = Snake_Direction::RIGHT;
-    }
-
-    int snake_head_position_x;
-    int snake_head_position_y;
-
     enum class Snake_Direction {
         RIGHT,
         LEFT,
         UP,
         DOWN
     };
+
+    int snake_head_position_x;
+    int snake_head_position_y;
+    Snake_Direction current_direction;
+
+    SnakeHead(int pos_x, int pos_y) {
+        snake_head_position_x = pos_x;
+        snake_head_position_y = pos_y;
+        Snake_Direction current_direction = Snake_Direction::RIGHT;
+    }
 };
 
 
@@ -34,12 +35,6 @@ public:
 
 class Fruit {
 public:
-    Fruit(bool fruitspawned) {
-        fruit_spawned = fruitspawned;
-        fruit_position_x = 0;
-        fruit_position_y = 0;
-    }
-
     int fruit_position_x;
     int fruit_position_y;
     bool fruit_spawned;
@@ -55,6 +50,12 @@ public:
 
         field[fruit_position_y][fruit_position_x] = 3;
         fruit_spawned = true;
+    }
+
+    Fruit(bool fruitspawned) {
+        fruit_spawned = fruitspawned;
+        fruit_position_x = 0;
+        fruit_position_y = 0;
     }
 };
 
