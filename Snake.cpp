@@ -22,7 +22,7 @@ public:
     SnakeHead(int pos_x, int pos_y) {
         snake_head_position_x = pos_x;
         snake_head_position_y = pos_y;
-        Snake_Direction current_direction = Snake_Direction::RIGHT;
+        current_direction = Snake_Direction::RIGHT;
     }
 };
 
@@ -102,6 +102,13 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Right) snake_head.current_direction = SnakeHead::Snake_Direction::RIGHT;
+                if (event.key.code == sf::Keyboard::Left)  snake_head.current_direction = SnakeHead::Snake_Direction::LEFT;
+                if (event.key.code == sf::Keyboard::Up)    snake_head.current_direction = SnakeHead::Snake_Direction::UP;
+                if (event.key.code == sf::Keyboard::Down)  snake_head.current_direction = SnakeHead::Snake_Direction::DOWN;
+            }
         }
         window.clear(sf::Color::Black);
 
@@ -117,7 +124,34 @@ int main() {
             }
         }
 
+        field[snake_head.snake_head_position_y][snake_head.snake_head_position_x] = 0;
+
+        if (snake_head.current_direction == SnakeHead::Snake_Direction::RIGHT) {
+            if (snake_head.snake_head_position_x < FIELD_WIDTH - 1) {
+                snake_head.snake_head_position_x++;
+            }
+        }
+        else if (snake_head.current_direction == SnakeHead::Snake_Direction::LEFT) {
+            if (snake_head.snake_head_position_x > 0) {
+                snake_head.snake_head_position_x--;
+            }
+        }
+        else if (snake_head.current_direction == SnakeHead::Snake_Direction::UP) {
+            if (snake_head.snake_head_position_y > 0) {
+                snake_head.snake_head_position_y--;
+            }
+        }
+        else if (snake_head.current_direction == SnakeHead::Snake_Direction::DOWN) {
+            if (snake_head.snake_head_position_y < FIELD_HEIGHT - 1) {
+                snake_head.snake_head_position_y++;
+            }
+        }
+
         field[snake_head.snake_head_position_y][snake_head.snake_head_position_x] = 1;
+
+        if (snake_head.snake_head_position_x == fruit.fruit_position_x and snake_head.snake_head_position_y == fruit.fruit_position_y) {
+            fruit.spawn_fruit(FIELD_WIDTH, FIELD_HEIGHT, field);
+        }
 
         window.display();
     }
