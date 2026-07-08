@@ -71,6 +71,18 @@ public:
         }
     }
 
+    bool check_head_body_collision(int head_pos_x, int head_pos_y) {
+        for (size_t i = 0; i < body_position_list.size(); ++i) {
+            int x_pos = body_position_list[i].first;
+            int y_pos = body_position_list[i].second;
+
+            if (x_pos == head_pos_x and y_pos == head_pos_y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     SnakeBody(int pos_x, int pos_y) {
         new_body_part(pos_x - 1, pos_y);
         new_body_part(pos_x - 2, pos_y);
@@ -204,7 +216,14 @@ int main() {
 
         if (snake_head.snake_head_position_x == fruit.fruit_position_x && snake_head.snake_head_position_y == fruit.fruit_position_y) {
             fruit.spawn_fruit(FIELD_WIDTH, FIELD_HEIGHT, field);
-            snake_body.new_body_part(snake_head.snake_head_position_x, snake_head.snake_head_position_y);
+
+            int tail_x = snake_body.body_position_list.back().first;
+            int tail_y = snake_body.body_position_list.back().second;
+            snake_body.new_body_part(tail_x, tail_y);
+        }
+
+        if (snake_body.check_head_body_collision(snake_head.snake_head_position_x, snake_head.snake_head_position_y)) {
+            window.close();
         }
 
         window.display();
